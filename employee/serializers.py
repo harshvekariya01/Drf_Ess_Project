@@ -2,23 +2,34 @@ from rest_framework import serializers
 from .models import Employee,designation,department,leave_type,leave,attendence
 
 
+class Department_Serializer(serializers.ModelSerializer):
+    class Meta: 
+        model = department
+        fields =["department_name","code"]
 
 class Empoloyee_Serializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Employee
         fields =["id","username","first_name","last_name","email","dob","phone_no","email","employee_designation","employee_department","acess_type"]
 
-class Designation_Serializer(serializers.ModelSerializer):
 
+
+
+
+
+class Designation_Serializer(serializers.ModelSerializer):
+    tracks = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    tracks = serializers.StringRelatedField(many=True)
+    tracks = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='dob'
+     )
     class Meta:
         model = designation
         fields =["designation_name","tracks"]
 
-class Department_Serializer(serializers.ModelSerializer):
-    class Meta: 
-        model = department
-        fields ="__all__"
+
   
 class Leave_type_Serializer(serializers.ModelSerializer):
     class Meta: 

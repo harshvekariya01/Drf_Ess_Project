@@ -23,6 +23,7 @@ from knox.views import LoginView as KnoxLoginView
 from knox.auth import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
 
 # -------------------------API Class----------------------------
 class login_viewset(KnoxLoginView):
@@ -51,31 +52,22 @@ class Employee_viewset(viewsets.ModelViewSet):
     search_fields = ['^username','email']
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['email']
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['category', 'in_stock']
-
-    # def get_queryset(self):
-    #     queryset = Employee.objects.all()
-
-    #     email_add = self.request.GET.get('email')
-    #     if email_add:
-    #         queryset = queryset.filter(email=email_add)
-
-    #     return queryset
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['username']
     
 
-    # def create(self, request, *args, **kwargs):
-    #     data = request.data
-    #     print(data,'=============================')
-    #     users = Employee.objects.create(username=data['username'],first_name=data['first_name'],last_name=data['last_name'],
-    #                                     email=data['email'],dob=data['dob'],address=data['address'],phone_no=data['phone_no']
-    #                                       ,employee_designation_id=data['employee_designation_id'],employee_department_id=
-    #                                       data['employee_department_id'],acess_type=data['acess_type'],
-    #                                       )
-    #     users.password=make_password(password=data['password'])
-    #     users.save()
-    #     serializer = Empoloyee_Serializer(users)
-    #     return Response(serializer.data)       
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        print(data,'=============================')
+        users = Employee.objects.create(username=data['username'],first_name=data['first_name'],last_name=data['last_name'],
+                                        email=data['email'],dob=data['dob'],address=data['address'],phone_no=data['phone_no']
+                                          ,employee_designation_id=data['employee_designation_id'],employee_department_id=
+                                          data['employee_department_id'],acess_type=data['acess_type'],
+                                          )
+        users.password=make_password(password=data['password'])
+        users.save()
+        serializer = self.serializer_class(users)
+        return Response(serializer.data)       
 
 class Designation_viewset(viewsets.ModelViewSet):       
     authentication_classes = (TokenAuthentication,)
