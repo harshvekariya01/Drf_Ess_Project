@@ -2,7 +2,20 @@ from django.db import models
 
 
 
-class employee(models.Model):
-    emp_id = models.CharField(max_length=100)
-    emp_name = models.CharField(max_length=255)
-    emp_email = models.EmailField(max_length=255, unique=True)
+class Auther(models.Model):
+    auther_name = models.CharField(max_length=200,blank=True,null=True)
+    def __str__(self):
+        return self.auther_name
+
+
+
+
+
+class Books(models.Model):
+    auther_name_s = models.ForeignKey(Auther,on_delete=models.CASCADE,blank=True,null=True,related_name="auther_model")
+    book_name = models.CharField(max_length=200,blank=True,null=True)
+    
+    def __str__(self):
+        return self.book_name
+
+    

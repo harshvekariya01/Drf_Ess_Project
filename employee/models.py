@@ -25,8 +25,8 @@ class Employee(AbstractUser):
     phone_no = models.BigIntegerField(blank=True,null=True)
     email = models.EmailField(blank=True,null=True,unique=True)
     password = models.CharField(max_length=12)
-    employee_designation = models.ForeignKey(designation,on_delete=models.CASCADE,blank=True,null=True)
-    employee_department = models.ForeignKey(department,on_delete=models.CASCADE,blank=True,null=True)
+    employee_designation = models.ForeignKey(designation,on_delete=models.CASCADE,blank=True,null=True,)
+    employee_department = models.ForeignKey(department,on_delete=models.CASCADE,blank=True,null=True,related_name="department_hit")
     access_status = (
         ('A','Admin'),
         ('E','Employee')
@@ -68,7 +68,7 @@ class leave(models.Model):
 
 
 class attendence(models.Model):
-    employee_name =  models.ForeignKey(Employee,on_delete=models.CASCADE,blank=True,null=True,related_name='employee_attendence')
+    employee_name =  models.ForeignKey(Employee,on_delete=models.CASCADE,blank=True,null=True)
     punch_in = models.DateTimeField(null=True,blank=True)
     punch_out = models.DateTimeField(null=True,blank=True)
     date =  models.DateField()
